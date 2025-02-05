@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Programming Solver</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #f4f4f9, #e0e0e0);
+        }
+
+        .container {
+            background: #fff;
+            padding: 40px 60px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #3498db;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* Media Query for Responsiveness */
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 40px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Linear Programming Solver</h1>
+        <div class="button-group">
+            <a href="{% url 'graphical' %}">
+                <button>Graphical Method</button>
+            </a>
+            <a href="{% url 'simplex' %}">
+                <button>Simplex Method</button>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Graphical Method</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        form {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            color: #34495e;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            margin-top: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button[type="button"] {
+            background-color: #2ecc71;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .results {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .constraints {
+            margin-top: 20px;
+        }
+
+        .constraints div {
+            margin-bottom: 20px;
+        }
+
+        .image-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Graphical Method</h1>
+    <form method="post">
+        {% csrf_token %}
+        <h3>Optimization Function</h3>
+        <label for="objective_type">Objective:</label>
+        <select id="objective_type" name="objective_type">
+            <option value="maximize">Maximize</option>
+            <option value="minimize">Minimize</option>
+        </select>
+        <br>
+        <label for="objective_x1">Coefficient of x1:</label>
+        <input type="number" id="objective_x1" name="objective_x1" step="any" required>
+        <br>
+        <label for="objective_x2">Coefficient of x2:</label>
+        <input type="number" id="objective_x2" name="objective_x2" step="any" required>
+        <br>
+        
+        <br>
+
+        <h3>Constraints</h3>
+        <div id="constraints" class="constraints">
+            <div>
+                <label for="constraints_x1[]">Coefficient of x1:</label>
+                <input type="number" name="constraints_x1[]" step="any" required>
+                <label for="constraints_x2[]">Coefficient of x2:</label>
+                <input type="number" name="constraints_x2[]" step="any" required>
+                <label for="constraints_operator[]">Operator:</label>
+                <select name="constraints_operator[]">
+                    <option value="<=">&le;</option>
+                    <option value=">=">&ge;</option>
+                </select>
+                <label for="constraints_rhs[]">RHS:</label>
+                <input type="number" name="constraints_rhs[]" step="any" required>
+            </div>
+        </div>
+        <button type="button" onclick="addConstraint()">Add Constraint</button>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div class="results">
+        <h2>Results</h2>
+        {% if solution %}
+            <p><strong>Optimal Solution:</strong> {{ solution }}</p>
+            <p><strong>Optimal Value:</strong> {{ optimal_value }}</p>
+            <div class="image-container">
+                <img src="data:image/png;base64,{{ image }}" alt="Graphical Representation of Constraints and Solution">
+            </div>
+        {% elif error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
+
+    <script>
+        function addConstraint() {
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <label for="constraints_x1[]">Coefficient of x1:</label>
+                <input type="number" name="constraints_x1[]" step="any" required>
+                <label for="constraints_x2[]">Coefficient of x2:</label>
+                <input type="number" name="constraints_x2[]" step="any" required>
+                <label for="constraints_operator[]">Operator:</label>
+                <select name="constraints_operator[]">
+                    <option value="<=">&le;</option>
+                    <option value=">=">&ge;</option>
+                </select>
+                <label for="constraints_rhs[]">RHS:</label>
+                <input type="number" name="constraints_rhs[]" step="any" required>
+            `;
+            document.getElementById('constraints').appendChild(div);
+        }
+    </script>
+</body>
+</html>
