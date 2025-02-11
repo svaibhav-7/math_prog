@@ -1,188 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simplex Method</title>
-    <style>
-        /* General Styles */
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f3f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simplex Problem Solver</title>
+  <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        .container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 800px;
-            text-align: left;
-        }
+    /* Body styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+      padding-bottom: 60px; /* space for footer */
+    }
 
-        h1 {
-            font-size: 28px;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+    /* Header styling */
+    header {
+      background-color: #2C3E50;
+      color: #ecf0f1;
+      padding: 20px 0;
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-        h3 {
-            font-size: 20px;
-            color: #34495e;
-            margin-bottom: 15px;
-        }
+    header h1 {
+      margin-bottom: 10px;
+    }
 
-        label {
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 8px;
-            display: block;
-        }
+    /* Navigation styling */
+    nav ul {
+      list-style: none;
+    }
 
-        input[type="number"], select {
-            padding: 10px;
-            margin-bottom: 15px;
-            width: 100%;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            transition: border-color 0.3s;
-        }
+    nav ul li {
+      display: inline;
+      margin: 0 15px;
+    }
 
-        input[type="number"]:focus {
-            border-color: #3498db;
-            outline: none;
-        }
+    nav ul li a {
+      color: #ecf0f1;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
+    /* Main content styling */
+    main {
+      width: 90%;
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
 
-        button:hover {
-            background-color: #45a049;
-        }
+    h2, h3 {
+      margin-bottom: 15px;
+    }
 
-        .constraint-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+    /* Form styling */
+    form {
+      margin-bottom: 20px;
+    }
 
-        .constraint-row input {
-            flex: 1;
-            min-width: 30%;
-        }
+    form label {
+      margin-right: 10px;
+    }
 
-        .button-group {
-            text-align: center;
-        }
+    form input[type="number"] {
+      width: 80px;
+      padding: 5px;
+      margin: 5px 10px 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
 
-        .results-section {
-            margin-top: 30px;
-            background-color: #e7f3e7;
-            padding: 15px;
-            border-radius: 5px;
-        }
+    form select {
+      padding: 5px;
+      margin: 5px 10px 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #fff;
+    }
 
-        .results-section p {
-            font-size: 18px;
-            color: #333;
-        }
+    form table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
 
-        .error-message {
-            color: #e74c3c;
-        }
+    form table th,
+    form table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
 
-        .add-constraint-btn {
-            background-color: #3498db;
-            padding: 12px 20px;
-            font-size: 16px;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        }
+    button {
+      background-color: #27ae60;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
 
-        .add-constraint-btn:hover {
-            background-color: #2980b9;
-        }
+    button:hover {
+      background-color: #2ecc71;
+    }
 
-        @media (max-width: 600px) {
-            .constraint-row input {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-        }
-    </style>
-    <script>
-        function addConstraint() {
-            const div = document.createElement('div');
-            div.classList.add('constraint-row');
-            div.innerHTML = `
-                <input type="number" name="constraints_x1[]" placeholder="Coefficient of x1" step="any" required>
-                <input type="number" name="constraints_x2[]" placeholder="Coefficient of x2" step="any" required>
-                <input type="number" name="constraints_rhs[]" placeholder="RHS" step="any" required>
-            `;
-            document.getElementById('constraints').appendChild(div);
-        }
-    </script>
+    /* Result section styling */
+    .result {
+      margin-top: 30px;
+    }
+    
+    .result ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    
+    /* Footer styling */
+    footer {
+      background-color: #2C3E50;
+      color: #ecf0f1;
+      text-align: center;
+      padding: 15px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Simplex Method</h1>
-        <form method="post">
-            {% csrf_token %}
-            
-            <h3>Objective Function</h3>
-            <label for="objective_x1">Coefficient of x1:</label>
-            <input type="number" id="objective_x1" name="objective_x1" step="any" required>
-            
-            <label for="objective_x2">Coefficient of x2:</label>
-            <input type="number" id="objective_x2" name="objective_x2" step="any" required>
-            
-            <h3>Constraints</h3>
-            <div id="constraints">
-                <div class="constraint-row">
-                    <input type="number" name="constraints_x1[]" placeholder="Coefficient of x1" step="any" required>
-                    <input type="number" name="constraints_x2[]" placeholder="Coefficient of x2" step="any" required>
-                    <input type="number" name="constraints_rhs[]" placeholder="RHS" step="any" required>
-                </div>
-            </div>
-            
-            <button type="button" class="add-constraint-btn" onclick="addConstraint()">Add Constraint</button>
-            <button type="submit">Submit</button>
-        </form>
+  <header>
+    <h1>Simplex Problem Solver</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/simplex">Solve Simplex Problem</a></li>
+      </ul>
+    </nav>
+  </header>
 
-        <div class="results-section">
-            <h3>Results</h3>
-            {% if solution %}
-                <p><strong>Optimal Solution:</strong> x1 = {{ solution.0 }}, x2 = {{ solution.1 }}</p>
-                <p><strong>Optimal Value:</strong> {{ optimal_value }}</p>
-            {% elif error %}
-                <p class="error-message">{{ error }}</p>
-            {% endif %}
-        </div>
-    </div>
+  <main>
+    <h2>Enter the Linear Programming Problem</h2>
+    <form method="post">
+      {% csrf_token %}
+      
+      <h3>Objective Function</h3>
+      <p>
+        Objective Type:
+        <label>
+          <input type="radio" name="objective_type" value="maximize" checked> Maximize
+        </label>
+        <label>
+          <input type="radio" name="objective_type" value="minimize"> Minimize
+        </label>
+      </p>
+      <p>Enter coefficients for the objective function (c):</p>
+      {% for i in range_vars %}
+        <label for="c{{ i }}">c{{ i }}:</label>
+        <input type="number" step="any" id="c{{ i }}" name="c{{ i }}" required>
+      {% endfor %}
+      
+      <h3>Constraints</h3>
+      <p>For each constraint, enter the coefficients (A), choose the inequality sign, and specify the right-hand side value (b).</p>
+      <table>
+        <tr>
+          <th>Constraint</th>
+          {% for j in range_vars %}
+            <th>Coefficient x{{ j|add:1 }}</th>
+          {% endfor %}
+          <th>Inequality</th>
+          <th>Right-hand Side (b)</th>
+        </tr>
+        {% for i in range_cons %}
+        <tr>
+          <td>Constraint {{ i|add:1 }}</td>
+          {% for j in range_vars %}
+            <td>
+              <input type="number" step="any" name="A_{{ i }}_{{ j }}" required>
+            </td>
+          {% endfor %}
+          <td>
+            <select name="inequality_{{ i }}">
+              <option value="<=">&le;</option>
+              <option value=">=">&ge;</option>
+              <option value="=">=</option>
+            </select>
+          </td>
+          <td>
+            <input type="number" step="any" name="b{{ i }}" required>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      
+      <button type="submit">Solve</button>
+    </form>
+
+    {% if result %}
+      <div class="result">
+        {% if result.error %}
+          <h3>Error:</h3>
+          <p>{{ result.error }}</p>
+        {% else %}
+          <h2>Solution:</h2>
+          <p><strong>Optimal Value (Z):</strong> {{ result.optimal_value }}</p>
+          <h3>Optimal Variables:</h3>
+          <ul>
+            {% for val in result.solution %}
+              <li>{{ val }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endif %}
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Simplex Problem Solver</p>
+  </footer>
 </body>
 </html>

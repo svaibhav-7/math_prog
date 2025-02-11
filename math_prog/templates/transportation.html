@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transportation Problem Solver</title>
+  <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Body styling */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Header styling */
+    header {
+      background-color: #2C3E50;
+      color: #ecf0f1;
+      padding: 20px 0;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      margin-bottom: 10px;
+    }
+
+    /* Navigation styling */
+    nav ul {
+      list-style: none;
+    }
+
+    nav ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+
+    nav ul li a {
+      color: #ecf0f1;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* Main section styling */
+    main {
+      width: 90%;
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 60px; /* Extra space for footer */
+    }
+
+    main h2,
+    main h3 {
+      margin-bottom: 15px;
+    }
+
+    /* Form styling */
+    form {
+      margin-bottom: 20px;
+    }
+
+    form table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    form table th,
+    form table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    input[type="number"] {
+      width: 80px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    label {
+      display: inline-block;
+      width: 150px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      display: inline-block;
+      background-color: #27ae60;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #2ecc71;
+    }
+
+    /* Result table styling */
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    .result-table th,
+    .result-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .result-table th {
+      background-color: #2C3E50;
+      color: #ecf0f1;
+    }
+
+    /* Footer styling */
+    footer {
+      background-color: #2C3E50;
+      color: #ecf0f1;
+      text-align: center;
+      padding: 15px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Transportation Problem Solver</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/transportation">Solve Transportation Problem</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Enter Cost Matrix, Supply, and Demand</h2>
+    <form method="post">
+      {% csrf_token %}
+      <h3>Cost Matrix (m x n)</h3>
+      <table>
+        <tr>
+          <th></th>
+          <th>Destination 1</th>
+          <th>Destination 2</th>
+          <th>Destination 3</th>
+        </tr>
+        {% for i in range_data %}
+        <tr>
+          <th>Source {{ i|add:1 }}</th>
+          {% for j in range_data %}
+          <td><input type="number" name="cost_{{ i }}_{{ j }}" required></td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+
+      <h3>Supply</h3>
+      {% for i in range_data %}
+      <label for="supply_{{ i }}">Source {{ i|add:1 }}:</label>
+      <input type="number" id="supply_{{ i }}" name="supply_{{ i }}" required><br>
+      {% endfor %}
+
+      <h3>Demand</h3>
+      {% for j in range_data %}
+      <label for="demand_{{ j }}">Destination {{ j|add:1 }}:</label>
+      <input type="number" id="demand_{{ j }}" name="demand_{{ j }}" required><br>
+      {% endfor %}
+
+      <button type="submit">Solve</button>
+    </form>
+
+    {% if result %}
+    <h2>Solution:</h2>
+    <p><strong>Total Cost:</strong> {{ result.total_cost }}</p>
+    <h3>Optimal Transportation Plan:</h3>
+    <table class="result-table">
+      <tr>
+        <th></th>
+        <th>Destination 1</th>
+        <th>Destination 2</th>
+        <th>Destination 3</th>
+      </tr>
+      {% for row in result.solution %}
+      <tr>
+        <th>Source {{ forloop.counter }}</th>
+        {% for value in row %}
+        <td>{{ value }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+    <p><strong>Status:</strong> {{ result.status }}</p>
+    {% endif %}
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Transportation Problem Solver</p>
+  </footer>
+</body>
+</html>
