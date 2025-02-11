@@ -1,108 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linear Programming Solver</title>
-    <style>
-        /* General Styles */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #f4f4f9, #e0e0e0);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linear Programming Solver</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Define CSS Variables */
+    :root {
+      --primary: #3498db;
+      --primary-dark: #2980b9;
+      --secondary: #2c3e50;
+      --background: #f4f4f9;
+      --gradient: linear-gradient(135deg, #f4f4f9, #e0e0e0);
+      --button-shadow: rgba(0, 0, 0, 0.2);
+    }
 
-        .container {
-            background: #fff;
-            padding: 40px 60px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 100%;
-            max-width: 500px;
-        }
+    /* Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      height: 100%;
+    }
+    
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--gradient);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-        h1 {
-            font-size: 28px;
-            color: #2c3e50;
-            margin-bottom: 25px;
-            letter-spacing: 0.5px;
-        }
+    h1 {
+      color: var(--secondary);
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+      text-align: center;
+    }
 
-        .button-group {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+    /* Flex layout for buttons */
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      width: 90%;
+      max-width: 500px;
+    }
 
-        button {
-            padding: 12px 25px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #3498db;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            width: 100%;
-            box-sizing: border-box;
-        }
+    .buttons a {
+      text-decoration: none;
+    }
 
-        button:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-        }
+    button {
+      width: 100%;
+      padding: 1.2rem 1.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      background-color: var(--primary);
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px var(--button-shadow);
+      cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    }
 
-        button:active {
-            transform: translateY(1px);
-        }
+    button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px var(--button-shadow);
+    }
 
-        button:focus {
-            outline: none;
-        }
+    button:active {
+      transform: translateY(2px);
+      box-shadow: 0 3px 10px var(--button-shadow);
+    }
 
-        a {
-            text-decoration: none;
-        }
-
-        /* Media Query for Responsiveness */
-        @media (max-width: 600px) {
-            .container {
-                padding: 30px 40px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-
-            button {
-                font-size: 16px;
-                padding: 10px 20px;
-            }
-        }
-    </style>
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      button {
+        font-size: 1.1rem;
+        padding: 1rem 1.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Linear Programming Solver</h1>
-        <div class="button-group">
-            <a href="{% url 'graphical' %}">
-                <button>Graphical Method</button>
-            </a>
-            <a href="{% url 'simplex' %}">
-                <button>Simplex Method</button>
-            </a>
-            <a href="{% url 'transportation_page' %}">
-                <button>Transportation problem</button>
-            </a>
-        </div>
-    </div>
+  <h1>Linear Programming Solver</h1>
+  <div class="buttons">
+    <a href="{% url 'graphical' %}">
+      <button>Graphical Method</button>
+    </a>
+    <a href="{% url 'simplex' %}">
+      <button>Simplex Method</button>
+    </a>
+    <a href="{% url 'transportation_page' %}">
+      <button>Transportation Problem</button>
+    </a>
+  </div>
 </body>
 </html>
+
