@@ -53,6 +53,7 @@
       gap: 1.5rem;
       width: 90%;
       max-width: 500px;
+      margin-bottom: 4rem;
     }
 
     .buttons a {
@@ -84,6 +85,18 @@
       box-shadow: 0 3px 10px var(--button-shadow);
     }
 
+    /* Footer styles */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 1rem;
+      text-align: center;
+      color: var(--secondary);
+      font-size: 0.9rem;
+      background: rgba(244, 244, 249, 0.9);
+    }
+
     /* Responsive adjustments */
     @media (max-width: 600px) {
       h1 {
@@ -108,6 +121,12 @@
     <a href="{% url 'transportation_page' %}">
       <button>Transportation Problem</button>
     </a>
+    <a href="https://mp-project-pk1y.onrender.com" target="_blank">
+      <button>View Study Planner</button>
+    </a>
+  </div>
+  <div class="footer">
+    <p>&copy; 2025 Linear Programming Solver. All rights reserved.</p>
   </div>
 </body>
 </html>
